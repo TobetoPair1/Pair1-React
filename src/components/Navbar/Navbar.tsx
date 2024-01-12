@@ -1,17 +1,22 @@
-import React from "react";
+import {useContext, useEffect} from "react";
 import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";
+import {AuthContext} from "../../contexts/AuthContext";
 
 type Props = {};
 
 const Navbar = (props: Props) => {
 	const cartState = useSelector((state: any) => state.cart);
-	console.log(cartState);
+	const authContext: any = useContext(AuthContext);
+
+	useEffect(() => {
+		console.log(cartState);
+	}, [cartState]);
 
 	return (
 		<nav className="navbar navbar-expand-lg bg-body-tertiary">
 			<div className="container-fluid">
-				<a className="navbar-brand" href="#">
+				<a className="navbar-brand" href="##">
 					Navbar
 				</a>
 				<button
@@ -37,6 +42,38 @@ const Navbar = (props: Props) => {
 								Ürün Ekle
 							</Link>
 						</li>
+
+						{!authContext.isAuthenticated && (
+							<li className="nav-item">
+								<button
+									className="nav-link"
+									onClick={() => {
+										authContext.setIsAuthenticated(true);
+									}}
+								>
+									Giriş Yap
+								</button>
+							</li>
+						)}
+						{authContext.isAuthenticated && (
+							<li className="nav-item">
+								<Link className="nav-link" to={"/product-add"}>
+									Hoşgeldiniz
+								</Link>
+							</li>
+						)}
+						<li className="nav-item">
+							<button
+								type="button"
+								className="btn btn-primary position-relative"
+							>
+								Sepet
+								<span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+									{cartState.cartItems.length}
+									<span className="visually-hidden">unread messages</span>
+								</span>
+							</button>
+						</li>
 					</ul>
 					<form className="d-flex" role="search">
 						<input
@@ -48,7 +85,7 @@ const Navbar = (props: Props) => {
 						<button className="btn btn-outline-success" type="submit">
 							Search
 						</button>
-					</form>					
+					</form>
 				</div>
 			</div>
 		</nav>

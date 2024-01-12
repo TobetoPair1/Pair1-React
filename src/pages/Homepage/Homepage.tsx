@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import ProductService from "../../services/productService";
 import {ProductModel} from "../../models/responses/ProductModel";
-
+import AuthService from "../../services/authService";
 type Props = {};
 
 const Homepage = (props: Props) => {
@@ -10,6 +10,9 @@ const Homepage = (props: Props) => {
 
 	useEffect(() => {
 		fetchProducts();
+		AuthService.login({username: "kminchelle", password: "123"}).then(
+			response => console.log(response),
+		);
 	}, []);
 
 	const onProductDelete = (id: number) => {
@@ -17,7 +20,9 @@ const Homepage = (props: Props) => {
 	};
 
 	const fetchProducts = () => {
+		console.log("İstek homepageden atılıyor..");
 		ProductService.getAll().then((response: any) => {
+			console.log("Cevap homepage'e ulaştı.");
 			setProducts(response.data.products);
 		});
 	};

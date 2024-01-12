@@ -1,10 +1,9 @@
-import React from "react";
 import {ProductModel} from "../../models/responses/ProductModel";
 import {Link} from "react-router-dom";
 import ProductService from "../../services/productService";
 import {HttpStatusCode} from "axios";
 import {useDispatch} from "react-redux";
-import { addToCart } from "../../store/slicers/cartSlice";
+import {addToCart} from "../../store/slices/cartSlice";
 
 type Props = {
 	product: ProductModel;
@@ -13,10 +12,12 @@ type Props = {
 };
 // Formik - YUP
 const ProductCard = (props: Props) => {
+	const dispatch = useDispatch();
+
 	const deleteProduct = async () => {
 		try {
 			let response = await ProductService.delete(props.product.id);
-			if (response.status == HttpStatusCode.Ok) {
+			if (response.status === HttpStatusCode.Ok) {
 				props.onDelete(props.product.id);
 				alert("Veri başarıyla silindi.");
 			}
@@ -25,9 +26,8 @@ const ProductCard = (props: Props) => {
 		}
 	};
 
-	const dispatch = useDispatch();
 	const addProductToCart = () => {
-		dispatch(addToCart(props.product));
+		dispatch(addToCart({product: props.product}));
 	};
 
 	return (

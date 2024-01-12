@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {useLocation, useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
 import {ProductModel} from "../../models/responses/ProductModel";
 import ProductService from "../../services/productService";
 
@@ -16,7 +16,7 @@ const ProductDetail = (props: Props) => {
 				setProduct(response.data);
 			});
 		}
-	}, []);
+	}, [params]);
 
 	return (
 		<div>
